@@ -18,7 +18,7 @@ scale = 0
 base = 1.1
 
 # Откройте видеофайл
-video_capture = cv2.VideoCapture('video2.mp4')  # Укажите путь к вашему видеофайлу
+video_capture = cv2.VideoCapture('video.mp4')  # Укажите путь к вашему видеофайлу
 
 # Проверка успешного открытия видео
 if not video_capture.isOpened():
