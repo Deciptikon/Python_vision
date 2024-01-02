@@ -8,6 +8,7 @@ ret1 = False
 ret2 = False
 
 visible_optic_flow = False
+two_vision = False
 
 flow = None
 
@@ -59,9 +60,15 @@ while True:
         
         # Отображение текущего кадра
         if visible_optic_flow:
-            cv2.imshow('Video', cv2.resize(flow_rgb, (visible_width, visible_height)))
+            if two_vision:
+                cv2.imshow('OpticalFlow', 
+                            cv2.vconcat([
+                                cv2.resize(flow_rgb, (visible_width, visible_height)), 
+                                cv2.resize(frame1, (visible_width, visible_height))]))
+            else:
+                cv2.imshow('OpticalFlow', cv2.resize(flow_rgb, (visible_width, visible_height)))
         else:
-            cv2.imshow('Video', cv2.resize(frame1, (visible_width, visible_height)))
+            cv2.imshow('OpticalFlow', cv2.resize(frame1, (visible_width, visible_height)))
 
     frame2 = frame1.copy()
     ret2 = ret1
@@ -82,6 +89,10 @@ while True:
         frame_w = int(frame_width * pow(base=base, exp=scale))
         frame_h = int(frame_height * pow(base=base, exp=scale))
         ret1, ret2 = False, False
+    elif key == ord('1'):
+        two_vision = False
+    elif key == ord('2'):
+        two_vision = True
 
 # Освобождение ресурсов и закрытие окон после завершения работы
 video_capture.release()
