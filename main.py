@@ -9,6 +9,10 @@ ret2 = False
 
 visible_optic_flow = False
 
+flow = None
+
+frame_width, frame_height = 640, 320
+
 # Откройте видеофайл
 video_capture = cv2.VideoCapture('video.mp4')  # Укажите путь к вашему видеофайлу
 
@@ -20,8 +24,10 @@ if not video_capture.isOpened():
 while True:
     # Считайте кадр из видео
     
-    ret1, frame1 = video_capture.read()
+    ret1, frame = video_capture.read()
 
+    frame1 = cv2.resize(frame, (frame_width, frame_height))
+    
     # Проверьте, успешно ли считан кадр
     if not ret1:
         print("Не удалось считать кадр. Возможно, достигнут конец видео.")
@@ -55,7 +61,7 @@ while True:
     frame2 = frame1.copy()
     ret2 = ret1
     
-    key = cv2.waitKey(30) & 0xFF
+    key = cv2.waitKey(1) & 0xFF
     
     if key == ord('q'):
         break
