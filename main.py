@@ -12,6 +12,10 @@ visible_optic_flow = False
 flow = None
 
 frame_width, frame_height = 640, 320
+frame_w, frame_h = frame_width, frame_height
+
+scale = 0
+base = 1.1
 
 # Откройте видеофайл
 video_capture = cv2.VideoCapture('video.mp4')  # Укажите путь к вашему видеофайлу
@@ -26,7 +30,7 @@ while True:
     
     ret1, frame = video_capture.read()
 
-    frame1 = cv2.resize(frame, (frame_width, frame_height))
+    frame1 = cv2.resize(frame, (frame_w, frame_h))
     
     # Проверьте, успешно ли считан кадр
     if not ret1:
@@ -67,6 +71,16 @@ while True:
         break
     elif key == ord('s'):
         visible_optic_flow = not visible_optic_flow
+    elif key == ord('+'):
+        scale += 1
+        frame_w = int(frame_width * pow(base=base, exp=scale))
+        frame_h = int(frame_height * pow(base=base, exp=scale))
+        ret1, ret2 = False, False
+    elif key == ord('-'):
+        scale -= 1
+        frame_w = int(frame_width * pow(base=base, exp=scale))
+        frame_h = int(frame_height * pow(base=base, exp=scale))
+        ret1, ret2 = False, False
 
 # Освобождение ресурсов и закрытие окон после завершения работы
 video_capture.release()
