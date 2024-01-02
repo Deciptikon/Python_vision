@@ -1,8 +1,13 @@
 import cv2
 import numpy as np
 
-frame1 = False
-frame2 = False
+frame1 = None
+frame2 = None
+
+ret1 = False
+ret2 = False
+
+visible_optic_flow = False
 
 # Откройте видеофайл
 video_capture = cv2.VideoCapture('video.mp4')  # Укажите путь к вашему видеофайлу
@@ -14,15 +19,15 @@ if not video_capture.isOpened():
 
 while True:
     # Считайте кадр из видео
-    frame2 = frame1.copy()
-    ret, frame1 = video_capture.read()
+    
+    ret1, frame1 = video_capture.read()
 
     # Проверьте, успешно ли считан кадр
-    if not ret:
+    if not ret1:
         print("Не удалось считать кадр. Возможно, достигнут конец видео.")
         break
     
-    if frame1 and frame2:
+    if ret1 and ret2:
 
         # Переведите кадры в градации серого
         gray1 = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
@@ -42,13 +47,20 @@ while True:
         flow_rgb = cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
         
         # Отображение текущего кадра
-        cv2.imshow('Video', frame1)
+        if visible_optic_flow:
+            cv2.imshow('Video', flow_rgb)
+        else:
+            cv2.imshow('Video', frame1)
 
+    frame2 = frame1.copy()
+    ret2 = ret1
     
-
-    # Проверка на нажатие клавиши 'q' для выхода из цикла
-    if cv2.waitKey(30) & 0xFF == ord('q'):
+    key = cv2.waitKey(30) & 0xFF
+    
+    if key == ord('q'):
         break
+    elif key == ord('s'):
+        visible_optic_flow = not visible_optic_flow
 
 # Освобождение ресурсов и закрытие окон после завершения работы
 video_capture.release()
