@@ -13,6 +13,7 @@ flow = None
 
 frame_width, frame_height = 640, 320
 frame_w, frame_h = frame_width, frame_height
+visible_width, visible_height = 960, 480
 
 scale = 0
 base = 1.1
@@ -58,9 +59,9 @@ while True:
         
         # Отображение текущего кадра
         if visible_optic_flow:
-            cv2.imshow('Video', flow_rgb)
+            cv2.imshow('Video', cv2.resize(flow_rgb, (visible_width, visible_height)))
         else:
-            cv2.imshow('Video', frame1)
+            cv2.imshow('Video', cv2.resize(frame1, (visible_width, visible_height)))
 
     frame2 = frame1.copy()
     ret2 = ret1
